@@ -126,8 +126,13 @@ def rsa_decrypt(n, d, s):
 
 
 def prime_factorization_pollard(n, cutoff):
-    """Разложение на простые по алгоритму Полларда.
-
-    На входе целое число n (имеющие вид p*q для некоторых простых p, q)
-    и константа отсечения cutoff ~ log(n).
-    Возвращает нетривиальный делитель p (или 1, если найти такой не удалось)."""
+    count_iter = 1000
+    factorials = [math.factorial(k) for k in range(1, cutoff)]
+    for i in range(count_iter):
+        a = gen_coprime(n)
+        for k in range(1, cutoff):
+            b = (fast_pow_mod(n, a, factorials[k - 1]) + n - 1) % n
+            d = math.gcd(b, n)
+            if d != 1 and d != n:
+                return d
+    return 1
