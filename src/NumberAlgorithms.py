@@ -94,7 +94,7 @@ def gen_coprime(phi):
 def gcdex(a, b):
     if a == 0:
         return 0, 1
-    x1, y1 = gcdex(b % a, b)
+    x1, y1 = gcdex(b % a, a)
     x = y1 - (b // a) * x1
     y = x1
     return x, y
@@ -102,7 +102,7 @@ def gcdex(a, b):
 
 def rev(number, modulo):
     rev_elem, y = gcdex(number, modulo)
-    rev_elem = (rev_elem + modulo) % modulo
+    rev_elem = (rev_elem % modulo + modulo) % modulo
     return rev_elem
 
 
@@ -116,18 +116,14 @@ def rsa_gen_keys():
     d = rev(e, phi)
     return p * q, p, q, e, d
 
-def rsa_encrypt(n, e, t):
-    """Шифрование по RSA.
 
-    На входе открытый ключ n, e и сообщение t.
-    Возвращает целое число, равное t^e mod n."""
+def rsa_encrypt(n, e, t):
+    return fast_pow_mod(n, t, e)
 
 
 def rsa_decrypt(n, d, s):
-    """Дешифрование по RSA.
+    return fast_pow_mod(n, s, d)
 
-    На входе закрытый ключ n, d и зашифрованное сообщение s.
-    Возвращает целое число, равное s^d mod n."""
 
 def prime_factorization_pollard(n, cutoff):
     """Разложение на простые по алгоритму Полларда.
