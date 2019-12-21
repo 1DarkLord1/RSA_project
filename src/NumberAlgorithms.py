@@ -29,8 +29,8 @@ def lucas_test(number, primes_decomp, base):
 def lucas_test_with_python_exp(number, primes_decomp, base):
     check = True
     for p in primes_decomp:
-        check &= (base ** ((number - 1) // p)) % number != 1
-    check &= (base ** (number - 1)) % number == 1
+        check &= pow(base, (number - 1) // p, number) != 1
+    check &= pow(base, number - 1, number) == 1
     return check
 
 
@@ -47,7 +47,6 @@ def gen_prime(primes, lower, upper):
             return number, primes_decomp, base
     return None, None, None
 
-
 def gen_primes():
     lower = 2 ** 123
     upper = 2 ** 128
@@ -59,7 +58,6 @@ def gen_primes():
         if number is not None:
             return number, primes_decomp, base
     return None, None, None
-
 
 def miller_rabin_test(number, count_iter):
     odd_part = number - 1
