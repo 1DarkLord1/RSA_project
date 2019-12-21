@@ -26,6 +26,13 @@ def lucas_test(number, primes_decomp, base):
     check &= fast_pow_mod(number, base, number - 1) == 1
     return check
 
+def lucas_test_with_python_exp(number, primes_decomp, base):
+    check = True
+    for p in primes_decomp:
+        check &= (base ** ((number - 1) // p)) % number != 1
+    check &= (base ** (number - 1)) % number == 1
+    return check
+
 
 def gen_prime(primes, lower, upper):
     primes_decomp_size = random.randint(4, len(primes))
@@ -36,7 +43,7 @@ def gen_prime(primes, lower, upper):
         return None, None, None
     max_base = 128
     for base in range(2, max_base):
-        if lucas_test(number, primes_decomp, base):
+        if lucas_test_with_python_exp(number, primes_decomp, base):
             return number, primes_decomp, base
     return None, None, None
 
